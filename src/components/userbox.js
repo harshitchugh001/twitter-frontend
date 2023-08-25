@@ -11,7 +11,7 @@ export default function UserBox() {
     
     fetchUserData(userid);
     
-  },[]);
+  },[userid]);
 
   const fetchUserData = async (userid) => {
     try {
