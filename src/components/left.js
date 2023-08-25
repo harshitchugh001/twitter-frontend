@@ -11,7 +11,7 @@ export default function Left() {
 
     fetchUserData(userid);
 
-  }, []);
+  }, [userid]);
 
   const fetchUserData = async (userid) => {
     try {
