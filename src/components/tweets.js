@@ -8,7 +8,7 @@ export default function Tweets() {
 
     async function fetchTweets() {
       try {
-        const response = await axios.get('http://localhost:8000/api/get-tweets');
+        const response = await axios.get(`${process.env.REACT_APP_API}/get-tweets`);
         console.log(response.data);
         setTweets(response.data);
       } catch (error) {

@@ -14,7 +14,7 @@ export default function Middlecreatetweet() {
 
         try {
             const currentDate = new Date();
-            const response = await axios.post('http://localhost:8000/api/createTweet', {
+            const response = await axios.post(`${process.env.REACT_APP_API}/createTweet`, {
                 userId: userId,
                 tweetDescription: tweetText,
                 username: user.name, 
@@ -35,7 +35,7 @@ export default function Middlecreatetweet() {
 
     const fetchUserData = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/userdata/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API}/${userId}`);
             setUserData(response.data);
         } catch (error) {
             console.log(error);
