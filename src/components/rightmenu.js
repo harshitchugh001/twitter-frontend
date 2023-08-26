@@ -1,5 +1,6 @@
 import React from 'react';
 import Userbox from './userbox';
+import Follow from './follow';
 
 
 export default function RightMenu() {
@@ -17,7 +18,9 @@ export default function RightMenu() {
             </div>
             <div className="max-w-sm rounded-lg bg-blue-800 overflow-hidden shadow-lg m-4 mr-20">
                 <Userbox />
-                
+            </div>
+            <div className="max-w-sm rounded-lg bg-blue-800 overflow-hidden shadow-lg m-4 mr-20">
+                <Follow />
             </div>
             
         </div>
