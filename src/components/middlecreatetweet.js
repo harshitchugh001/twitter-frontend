@@ -35,7 +35,7 @@ export default function Middlecreatetweet() {
 
     const fetchUserData = async (userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API}/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API}/userdata/${userId}`);
             setUserData(response.data);
         } catch (error) {
             console.log(error);

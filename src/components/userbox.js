@@ -16,7 +16,7 @@ export default function UserBox() {
   const fetchUserData = async (userid) => {
     try {
       
-        const response = await axios.get(`${process.env.REACT_APP_API}/${userid}`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/userdata/${userid}?`);
           setUserData(response.data);
         }catch(error){
             console.log(error);
