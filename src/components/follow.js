@@ -38,11 +38,10 @@ export default function Follow() {
 
     const handleFollow = async (followedUserId) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API}/follow-user`, {
+            await axios.post(`${process.env.REACT_APP_API}/follow-user`, {
                 currentUserId: loggedInUserId,
                 followedUserId: followedUserId
             });
-
             setUsers(prevUsers => 
                 prevUsers.map(user => 
                     user.userid === followedUserId ? { ...user, isFollowing: true } : user
