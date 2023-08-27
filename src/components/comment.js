@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import CommentList from './commentlist';
 
 export default function Comment({ tweetId}) {
   const [comment, setComment] = useState('');
@@ -43,6 +44,7 @@ export default function Comment({ tweetId}) {
           Post
         </button>
       </form>
+      <CommentList tweetId={tweetId} />
     </div>
   );
 }
