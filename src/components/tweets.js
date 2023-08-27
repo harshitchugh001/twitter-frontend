@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Comment from './comment';
 
 export default function Tweets() {
   const [tweets, setTweets] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user ? user.userId : null;
+  const [commentsVisibility, setCommentsVisibility] = useState({});
 
   useEffect(() => {
 
@@ -42,6 +44,13 @@ export default function Tweets() {
     }
   };
 
+  const toggleComments = (tweetId) => {
+    setCommentsVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [tweetId]: !prevVisibility[tweetId],
+    }));
+  };
+
   const handleLike = async (tweetId) => {
     console.log("like");
     try {
@@ -49,7 +58,7 @@ export default function Tweets() {
         userId: userId,
         tweetId,
       });
-      console.log(tweetId,userId);
+      console.log(tweetId, userId);
 
       const updatedTweet = response.data.tweet;
 
@@ -98,8 +107,8 @@ export default function Tweets() {
             <div class="flex items-center justify-between space-x-2 py-3">
               <button
                 className={`group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2 ${tweet.likeArray.includes('your_user_id_here')
-                    ? 'bg-blue-800 text-blue-300'
-                    : 'text-blue-400 hover:bg-blue-800 hover:text-blue-300'
+                  ? 'bg-blue-800 text-blue-300'
+                  : 'text-blue-400 hover:bg-blue-800 hover:text-blue-300'
                   }`}
                 onClick={() => handleLike(tweet.tweetId)}
               >
@@ -110,39 +119,57 @@ export default function Tweets() {
                 <span className="mmd:hidden">Likes</span>
               </button>
 
-              
+
               <a href="/" class="group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2">
                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" class="h-5 w-5 mr-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                   <path d="M629.657 343.598L528.971 444.284c-9.373 9.372-24.568 9.372-33.941 0L394.343 343.598c-9.373-9.373-9.373-24.569 0-33.941l10.823-10.823c9.562-9.562 25.133-9.34 34.419.492L480 342.118V160H292.451a24.005 24.005 0 0 1-16.971-7.029l-16-16C244.361 121.851 255.069 96 276.451 96H520c13.255 0 24 10.745 24 24v222.118l40.416-42.792c9.285-9.831 24.856-10.054 34.419-.492l10.823 10.823c9.372 9.372 9.372 24.569-.001 33.941zm-265.138 15.431A23.999 23.999 0 0 0 347.548 352H160V169.881l40.416 42.792c9.286 9.831 24.856 10.054 34.419.491l10.822-10.822c9.373-9.373 9.373-24.569 0-33.941L144.971 67.716c-9.373-9.373-24.569-9.373-33.941 0L10.343 168.402c-9.373 9.373-9.373 24.569 0 33.941l10.822 10.822c9.562 9.562 25.133 9.34 34.419-.491L96 169.881V392c0 13.255 10.745 24 24 24h243.549c21.382 0 32.09-25.851 16.971-40.971l-16.001-16z"></path>
                 </svg>
                 <span class="mmd:hidden">Retweet</span>
               </a>
-              <a href="/" class="group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2">
-                <span class="m-1 text-md">{tweet.commentCount}</span>
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="h-5 w-5 mr-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
-                </svg>
-                <span class="mmd:hidden">Comments</span>
+              <a
+                href='/'
+                className="group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleComments(tweet._id); 
+                }}
+              >
+                <span className="m-1 text-md">{tweet.commentCount}</span>
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 512 512"
+                    className="h-5 w-5 mr-1"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
+                  </svg>
+                  {commentsVisibility[tweet._id] ? 'Hide Comments' : 'View Comments'}
               </a>
 
               <button
                 className={`group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2 ${tweet.likeArray.includes('your_user_id_here')
-                    ? 'bg-blue-800 text-blue-300'
-                    : 'text-blue-400 hover:bg-blue-800 hover:text-blue-300'
+                  ? 'bg-blue-800 text-blue-300'
+                  : 'text-blue-400 hover:bg-blue-800 hover:text-blue-300'
                   }`}
                 onClick={() => handleShare(tweet.tweetId)}
               >
-                 <span class="m-1 text-md">{tweet.shareCount}</span>
+                <span class="m-1 text-md">{tweet.shareCount}</span>
                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                   <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
                 </svg>
                 <span class="mmd:hidden">Shares</span>
               </button>
 
-              
+
             </div>
           </div>
           <hr className="border-gray-600" />
+
+          {commentsVisibility[tweet._id] && <Comment tweetId={tweet._id} />}
         </div>
       ))}
     </div>
