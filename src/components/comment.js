@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
-export default function Comment({ tweetId }) {
+export default function Comment({ tweetId}) {
   const [comment, setComment] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user ? user.userId : null;
 
   const handleCommentSubmit = async (e) => {
+    console.log(tweetId,userId);
     e.preventDefault();
 
-    
+    if (comment.trim() === '') {
+      return; 
+    }
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API}/post-comments`, {
+        text: comment,
+        tweetId,
+        userId,
+      });
+      console.log('Comment posted:', response.data);
+      setComment('');
+    } catch (error) {
+      console.error('Error posting comment:', error);
+    }
   };
 
   return (
