@@ -104,7 +104,7 @@ export default function Tweets() {
               {tweet.tweetDescription}
             </p>
 
-            <div class="flex items-center justify-between space-x-2 py-3">
+            <div className="flex flex-wrap justify-between space-x-2 py-3">
               <button
                 className={`group flex items-center text-blue-400 text-sm font-medium rounded-full px-2 py-1 hover:bg-blue-800 hover:text-blue-300 p-2 ${tweet.likeArray.includes('your_user_id_here')
                   ? 'bg-blue-800 text-blue-300'

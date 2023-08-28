@@ -1,36 +1,60 @@
-import React from 'react';
-import Leftmenu from './left'
-import Middlemenu from './middlemenu'
-import Middlecreatetweet from './middlecreatetweet'
-import Tweets from './tweets'
-import Rightmenu from './rightmenu'
-
-
+import React, { useState } from 'react';
+import Leftmenu from './left';
+import Middlemenu from './middlemenu';
+import Middlecreatetweet from './middlecreatetweet';
+import Tweets from './tweets';
+import Rightmenu from './rightmenu';
 
 export default function Userhomepage() {
+    const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false);
+    const [isRightMenuOpen, setIsRightMenuOpen] = useState(false);
 
-    
+    const handleLeftMenuToggle = () => {
+        setIsLeftMenuOpen(!isLeftMenuOpen);
+    };
 
-
+    const handleRightMenuToggle = () => {
+        setIsRightMenuOpen(!isRightMenuOpen);
+    };
 
     return (
         <div className="bg-blue-800 min-h-screen">
-            <div className="flex">
-                <div className="w-2/5 text-white h-12 pl-32 py-4 h-auto">
-                    <Leftmenu />
+            <div className="flex flex-col lg:flex-row">
+                <div className="lg:hidden">
+                    <button
+                        onClick={handleLeftMenuToggle}
+                        className="p-2 bg-blue-600 text-white absolute top-0 left-0 z-10"
+                    >
+                        ☰
+                    </button>
                 </div>
-                <div className="w-3/5 border border-gray-600 h-auto border-t-0">
+                {window.innerWidth <= 950 ? (
+                    <div className={`w-full text-white h-auto py-4 border-b border-gray-600 ${isLeftMenuOpen ? 'block' : 'hidden'}`}>
+                        <Leftmenu />
+                    </div>
+                ) : (
+                    <div className="w-full lg:w-2/5 text-white lg:h-auto pl-4 lg:pl-32 py-4 lg:border-b lg:border-gray-600">
+                        <Leftmenu />
+                    </div>
+                )}
+                <div className="w-full lg:w-3/5 h-auto">
                     <Middlemenu />
                     <hr className="border-gray-600"></hr>
                     <Middlecreatetweet />
                     <Tweets />
                 </div>
-                <div className="w-2/5 h-12">
+                <div className={`w-full lg:w-2/5 h-12 ${isRightMenuOpen ? 'block' : 'hidden'}`}>
                     <Rightmenu />
+                </div>
+                <div className="lg:hidden">
+                    <button
+                        onClick={handleRightMenuToggle}
+                        className="p-2 bg-blue-600 text-white absolute top-0 right-0 z-10"
+                    >
+                        ☰
+                    </button>
                 </div>
             </div>
         </div>
-
-
-    )
+    );
 }
