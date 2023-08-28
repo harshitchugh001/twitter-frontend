@@ -7,15 +7,11 @@ import Rightmenu from './rightmenu';
 
 export default function Userhomepage() {
     const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false);
-    const [isRightMenuOpen, setIsRightMenuOpen] = useState(false);
 
     const handleLeftMenuToggle = () => {
         setIsLeftMenuOpen(!isLeftMenuOpen);
     };
 
-    const handleRightMenuToggle = () => {
-        setIsRightMenuOpen(!isRightMenuOpen);
-    };
 
     return (
         <div className="bg-blue-800 min-h-screen">
@@ -43,17 +39,10 @@ export default function Userhomepage() {
                     <Middlecreatetweet />
                     <Tweets />
                 </div>
-                <div className={`w-full lg:w-2/5 h-12 ${isRightMenuOpen ? 'block' : 'hidden'}`}>
+                <div className={`w-full lg:w-2/5 h-12`}>
                     <Rightmenu />
                 </div>
-                <div className="lg:hidden">
-                    <button
-                        onClick={handleRightMenuToggle}
-                        className="p-2 bg-blue-600 text-white absolute top-0 right-0 z-10"
-                    >
-                        ☰
-                    </button>
-                </div>
+                
             </div>
         </div>
     );
